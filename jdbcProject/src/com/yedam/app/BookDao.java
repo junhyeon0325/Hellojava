@@ -9,20 +9,61 @@ import java.util.ArrayList;
 
 // 조회, 등록, 수정, 삭제
 public class BookDao {
+	// 단건조회
+	public ArrayList<Book> findByID(int bno) {
+		Connection conn = DBUtil.getConnect();
+		ArrayList<Book> list1 = new ArrayList<Book>();
+		String query = "select id, title, author, price" 
++ "     from book" 
++ "     where id = " + bno;
+
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			rs.next();
+			Book book = new Book();
+			book.setId(rs.getInt("id"));
+			book.setTitle(rs.getString("title"));
+			book.setAuthor(rs.getString("author"));
+			book.setPrice(rs.getInt("price"));
+			list1.add(book);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list1;
+	}
+
 	// 숙제 : 삭제(delete), 단건조회(findById) 작성해보세용.
-	
-	
+	public boolean delete(int bno) { // return값은 boolean으로, 받는 매개변수는 책번호로
+		Connection conn = DBUtil.getConnect(); // DBUtil과 연결
+		String query = "delete from book" + "     where id = ?"; // delete 쿼리를 적어서 query변수에 저장
+		try {
+			PreparedStatement stmt = conn.prepareStatement(query); // 예외처리, ?에 들어갈 방식을 지정
+			stmt.setInt(1, bno);
+
+			int r = stmt.executeUpdate(); // executeUpdate()는 INSERT, UPDATE, DELETE와 같은 DML(Data Manipulation
+											// Language)에서 실행 결과로 영향을 받은 레코드 수를 반환한다.
+			if (r > 0) { // 0보다 크다는 것은 실행 결과로 영향을 받은 쿼리가 있다는 의미
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	// 수정. 매개값(int bno, int price), 반환값(boolean)
 	public boolean update(int bno, int price) {
 		Connection conn = DBUtil.getConnect();
 		String query = "update book" + "     set price = ?" + "     where id = ?";
-		
-		System.out.println(query);
+
+//		System.out.println(query);
 		try {
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, price);
 			stmt.setInt(2, bno);
-			
+
 			int r = stmt.executeUpdate();
 			if (r > 0) {
 				return true;
