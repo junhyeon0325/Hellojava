@@ -33,6 +33,37 @@ public class Main {
 					);	// list는 가고올라면 get을 써야한다
 				}// end for
 				break;
+			
+			case 2:	// 도서등록.
+				System.out.print("도서번호>> ");
+				int bno = scn.nextInt();scn.nextLine();	// 반환값이 int. 1003엔터를 치면은 1003값만 읽어들여서 bno에 들어가고 엔터는 처리가 안됨 엔터는 nextline에서 처리가 됨 그래서 도서저자까지 넘어가버림
+				System.out.print("도서제목>> ");
+				String title = scn.nextLine();	// 반환값이 String.
+				System.out.print("도서저자>> ");
+				String author = scn.nextLine();	// 반환값이 String.
+				System.out.print("도서가격>> ");
+				int price = scn.nextInt();scn.nextLine();	// 반환값이 int.
+				
+				Book book = new Book(bno, title, author, price);	// book
+				if(dao.insert(book)) {	// dao.insert(book)반환값이 boolean이라서 true면 위에꺼 false면 else꺼
+					System.out.println("정상 등록.");
+				} else {
+					System.out.println("등록 중 오류");
+				}
+				break;
+			
+			case 3:
+				System.out.print("도서번호>> ");
+				bno = scn.nextInt();scn.nextLine();
+				System.out.print("도서가격>> ");
+				price = scn.nextInt();scn.nextLine();	// 반환값이 int.
+				
+				if(dao.update(bno, price)) {
+					System.out.println("정상 수정.");
+				} else {
+					System.out.println("등록 중 오류");
+				}
+				break;
 			case 9:
 				run = false;
 			}// end switch
