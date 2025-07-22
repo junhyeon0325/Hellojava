@@ -9,6 +9,9 @@ public class Main {
 	public static void main(String[] args) {
 		boolean run = true;
 		Connection conn = DBUtil.getConnect();
+		Scanner sc = new Scanner(System.in);
+		UsrDao dao = new UsrDao();
+		PostDao daop = new PostDao();
 		
 		// id와 pwd 먼저선언
 		String id = "";
@@ -16,8 +19,6 @@ public class Main {
 		String name = "";
 		
 		while(run) {
-			Scanner sc = new Scanner(System.in);
-			UsrDao dao = new UsrDao();
 			
 			// 기능들 목록들 출력
 			System.out.println("------------------------");
@@ -59,24 +60,41 @@ public class Main {
 					System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
 					id = "";
 					pwd = "";
-				}						
+				}
 				break;
+				
+			case 1:		// 글목록보기
+				ArrayList<Post> listp = daop.postListCheck();
+				System.out.println("----------------------------------");
+				System.out.println("글번호, 제목, 작성자, 작성일시, 추천수, 조회수");
+				System.out.println("----------------------------------");
+				
+				for(int i = 0; i < listp.size(); i++) {
+					System.out.println(listp.get(i).getPnum() + ", " + listp.get(i).getTitle()
+							+ ", " + listp.get(i).getName() + ", " + listp.get(i).getPdate()
+							+ ",  " + listp.get(i).getPgood() + ", " + listp.get(i).getPview());
+				}// end for
+				
+				break;
+
 			case 10:	// 회원가입
 				System.out.println("회원가입입니다.");
 				
-				// 아이디, 비번, 이름 입력
+				// 아이디 입력
 				System.out.print("아이디 입력 : ");
 				String nid = sc.nextLine();
-				System.out.print("비밀번호 입력 : ");
-				String npwd = sc.nextLine();
-				System.out.print("이름 입력 : ");
-				String nname = sc.nextLine();	
-
+				
 				// 아이디 중복 확인
 				if(dao.loginId(nid)) {
 					System.out.println("이미 존재하고 있는 아이디 입니다.\n다른아이디를 입력해주세요.");
 					break;
 				}
+				
+				// 비번, 이름 입력
+				System.out.print("비밀번호 입력 : ");
+				String npwd = sc.nextLine();
+				System.out.print("이름 입력 : ");
+				String nname = sc.nextLine();	
 				
 				// 회원가입 성공 or 회원가입 실패
 				if(dao.signUp(nid, npwd, nname)) {
@@ -84,8 +102,8 @@ public class Main {
 				} else {
 					System.out.println("회원가입 실패!");
 				}
-				
 				break;
+				
 			case 11:	// 현재 접속한 아이디 확인				
 				// 로그인을 하지 않았다면 id가 빈공간일테니 로그인하라고 말해줌, 반대로 했다면 아이디와 이름 출력
 				if(id.equals("")) {
@@ -99,6 +117,7 @@ public class Main {
 					System.out.printf("이름 : %s\n", list.get(0).getName());
 				}				
 				break;
+				
 			default:	// 종료 기능
 				System.out.println("종료되었습니다.");
 				run = false;

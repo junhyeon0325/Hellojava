@@ -91,8 +91,7 @@ public class Main {
 				System.out.println("===========================");
 				System.out.println(list1.get(0).getId() + " " + list1.get(0).getTitle() + " "
 						+ list1.get(0).getAuthor() + " " + list1.get(0).getPrice());				
-				break;
-				
+				break;		
 				
 			case 9:
 				run = false;
