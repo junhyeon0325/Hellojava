@@ -10,6 +10,8 @@ public class Post {
 	private Date pdate;
 	private int pgood;
 	private int pview;
+	private String Content;
+	
 	
 	// 생성자
 	// 메소드
@@ -48,6 +50,12 @@ public class Post {
 	}
 	public void setPview(int pview) {
 		this.pview = pview;
+	}
+	public String getContent() {
+		return Content;
+	}
+	public void setContent(String content) {
+		Content = content;
 	}
 	
 }// end class
