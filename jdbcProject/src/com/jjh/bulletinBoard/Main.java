@@ -21,7 +21,7 @@ public class Main {
 		while(run) {
 			
 			// 기능들 목록들 출력
-			System.out.println("------------------------");
+			System.out.println("=========================");
 			System.out.println("0. 로그인");	// 아이디 패스워드 맞는지, 틀렸는지 체크
 			System.out.println("1. 글목록보기");
 			System.out.println("2. 글등록하기");
@@ -33,8 +33,9 @@ public class Main {
 			System.out.println("8. 글 검색하기");
 			System.out.println("10. 회원가입");	// 아이디가 이미 있습니다.
 			System.out.println("11. 현재접속한 아이디 확인");	
-			System.out.println("12. 종료");
-			System.out.println("------------------------");
+			System.out.println("12. 로그아웃");
+			System.out.println("13. 종료");
+			System.out.println("=========================");
 			// 기능 번호 입력
 			System.out.print("실행할 목록번호를 입력해주세요>> ");
 			int blist = sc.nextInt();
@@ -263,22 +264,66 @@ public class Main {
 			case 8:		// 게시글 검색
 				System.out.println("1. 제목으로 검색");
 				System.out.println("2. 작성자 이름으로 검색");
-				System.out.println("검색 선택>> ");
-				int psnum = sc.nextInt();
+				System.out.print("검색 선택>> ");
+				int psnum = sc.nextInt();	// post search number
 				sc.nextLine();
+				
+				// 1번 인지 2번인지 고르는 switch문
+				switch(psnum) {
+				case 1:
+					// 1. 제목으로 검색
+					System.out.print("제목을 입력해 주세요>> ");
+					String pst = sc.nextLine();
+					ArrayList<Post> listps = daop.postListSearchTitle(pst);
+					System.out.println("------------------------------------------------------------");
+					System.out.println(" 글번호 | 1. 제목 | 2. 작성자 | 3. 작성일시 | 4. 추천수 | 5. 조회수");
+					System.out.println("------------------------------------------------------------");
+					
+					// 글목록 출력하는 반복문
+					for(int i = 0; i < listps.size(); i++) {
+						System.out.println(" " + listps.get(i).getPnum() + " | 1. " + listps.get(i).getTitle()
+								+ " | 2. " + listps.get(i).getName() + " | 3. " + listps.get(i).getPdate()
+								+ " | 4. " + listps.get(i).getPgood() + " | 5. " + listps.get(i).getPview());
+					}// end for
+					break;
+				case 2:
+					// 2. 작성자 이름으로 검색
+					System.out.print("작성자 이름을 입력해 주세요>> ");
+					String psn = sc.nextLine();		// post search name
+					ArrayList<Post> listpsn = daop.postListSearchName(psn);
+					System.out.println("------------------------------------------------------------");
+					System.out.println(" 글번호 | 1. 제목 | 2. 작성자 | 3. 작성일시 | 4. 추천수 | 5. 조회수");
+					System.out.println("------------------------------------------------------------");
+					
+					// 글목록 출력하는 반복문
+					for(int i = 0; i < listpsn.size(); i++) {
+						System.out.println(" " + listpsn.get(i).getPnum() + " | 1. " + listpsn.get(i).getTitle()
+								+ " | 2. " + listpsn.get(i).getName() + " | 3. " + listpsn.get(i).getPdate()
+								+ " | 4. " + listpsn.get(i).getPgood() + " | 5. " + listpsn.get(i).getPview());
+					}// end for
+					break;
+				default:
+					break;
+				}
+				break;
 				
 				
 			case 10:	// 회원가입
 				System.out.println("회원가입입니다.");
-				
-				// 아이디 입력
-				System.out.print("아이디 입력 : ");
-				String nid = sc.nextLine();
-				
-				// 아이디 중복 확인
-				if(dao.loginId(nid)) {
-					System.out.println("이미 존재하고 있는 아이디 입니다.\n다른아이디를 입력해주세요.");
-					break;
+				boolean runs = true;
+				String nid = "";
+				while(runs) {					
+					// 아이디 입력
+					System.out.print("아이디 입력 : ");
+					nid = sc.nextLine();
+					
+					// 아이디 중복 확인
+					if(dao.loginId(nid)) {
+						System.out.println("이미 존재하고 있는 아이디 입니다.\n다른아이디를 입력해주세요.");
+						
+					} else {
+						runs = false;
+					}
 				}
 				
 				// 비번, 이름 입력
@@ -307,6 +352,12 @@ public class Main {
 					System.out.printf("비밀번호 : %s\n", list.get(0).getPwd());
 					System.out.printf("이름 : %s\n", list.get(0).getName());
 				}				
+				break;
+			case 12:
+				id = "";
+				pwd = "";
+				name = "";
+				System.out.println("로그아웃 되었습니다.");
 				break;
 				
 			default:	// 종료 기능

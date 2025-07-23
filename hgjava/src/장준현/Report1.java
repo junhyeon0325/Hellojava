@@ -11,6 +11,7 @@ public class Report1 {
 		System.out.printf("##년도 입력 : ");
 		int year = Integer.parseInt(scanner.nextLine());
 		
+		
 		if(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0 )) {
 			System.out.printf("%d년은 윤년입니다.\n",year);			
 		} else {

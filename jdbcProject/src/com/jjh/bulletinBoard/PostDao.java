@@ -9,40 +9,112 @@ import java.util.ArrayList;
 
 public class PostDao {
 		
-	// 글 시간대로 정렬
-		public ArrayList<Post> postListDate() {
-			Connection conn = DBUtil.getConnect();	// db연결
-			ArrayList<Post> list = new ArrayList<Post>();	// post형식 list 객체 생성
+	// 글 작성자 기준 검색
+	public ArrayList<Post> postListSearchName(String name) {
+		Connection conn = DBUtil.getConnect();	// db연결
+		ArrayList<Post> list = new ArrayList<Post>();	// post형식 list 객체 생성
+		
+		// 글 조회 쿼리
+		String query = "select   pnum,"
+				+ "              title,"
+				+ "              name,"
+				+ "              pdate,"
+				+ "              pgood,"
+				+ "              pview"
+				+ "     from     post"
+				+ "     where    name like ?"
+				+ "     order by pnum";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, "%"+name+"%");
+			ResultSet rs = stmt.executeQuery();	
 			
-			// 글 조회 쿼리
-			String query = "select   pnum,"
-					+ "              title,"
-					+ "              name,"
-					+ "              pdate,"
-					+ "              pgood,"
-					+ "              pview"
-					+ "     from     post"
-					+ "     order by pdate desc";
-			try {
-				Statement stmt = conn.createStatement();	// 쿼리를 생성하기 위한 객체를 stmt에 저장
-				ResultSet rs = stmt.executeQuery(query);	
-				
-				while(rs.next()) {
-					Post post = new Post();
-					post.setPnum(rs.getInt("pnum"));
-					post.setTitle(rs.getString("title"));
-					post.setName(rs.getString("name"));
-					post.setPdate(rs.getDate("pdate"));
-					post.setPgood(rs.getInt("pgood"));
-					post.setPview(rs.getInt("pview"));
-					list.add(post);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			while(rs.next()) {
+				Post post = new Post();
+				post.setPnum(rs.getInt("pnum"));
+				post.setTitle(rs.getString("title"));
+				post.setName(rs.getString("name"));
+				post.setPdate(rs.getDate("pdate"));
+				post.setPgood(rs.getInt("pgood"));
+				post.setPview(rs.getInt("pview"));
+				list.add(post);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	// 글 제목 기준 검색
+	public ArrayList<Post> postListSearchTitle(String title) {
+		Connection conn = DBUtil.getConnect();	// db연결
+		ArrayList<Post> list = new ArrayList<Post>();	// post형식 list 객체 생성
+		
+		// 글 조회 쿼리
+		String query = "select   pnum,"
+				+ "              title,"
+				+ "              name,"
+				+ "              pdate,"
+				+ "              pgood,"
+				+ "              pview"
+				+ "     from     post"
+				+ "     where    title like ?"
+				+ "     order by pnum";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, "%"+title+"%");
+			ResultSet rs = stmt.executeQuery();	
 			
-			return list;
-		}// end postListGood
+			while(rs.next()) {
+				Post post = new Post();
+				post.setPnum(rs.getInt("pnum"));
+				post.setTitle(rs.getString("title"));
+				post.setName(rs.getString("name"));
+				post.setPdate(rs.getDate("pdate"));
+				post.setPgood(rs.getInt("pgood"));
+				post.setPview(rs.getInt("pview"));
+				list.add(post);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	// 글 시간대로 정렬
+	public ArrayList<Post> postListDate() {
+		Connection conn = DBUtil.getConnect();	// db연결
+		ArrayList<Post> list = new ArrayList<Post>();	// post형식 list 객체 생성
+		
+		// 글 조회 쿼리
+		String query = "select   pnum,"
+				+ "              title,"
+				+ "              name,"
+				+ "              pdate,"
+				+ "              pgood,"
+				+ "              pview"
+				+ "     from     post"
+				+ "     order by pdate desc";
+		try {
+			Statement stmt = conn.createStatement();	// 쿼리를 생성하기 위한 객체를 stmt에 저장
+			ResultSet rs = stmt.executeQuery(query);	
+			
+			while(rs.next()) {
+				Post post = new Post();
+				post.setPnum(rs.getInt("pnum"));
+				post.setTitle(rs.getString("title"));
+				post.setName(rs.getString("name"));
+				post.setPdate(rs.getDate("pdate"));
+				post.setPgood(rs.getInt("pgood"));
+				post.setPview(rs.getInt("pview"));
+				list.add(post);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}// end postListGood
 	
 	// 글 추천순대로 정렬
 	public ArrayList<Post> postListGood() {
@@ -163,6 +235,7 @@ public class PostDao {
 			
 			// postv에 title과 content를 넣어서 return해주기
 			ResultSet rs = stmt.executeQuery();
+			
 			rs.next();
 			postv.setTitle(rs.getString("title"));
 			postv.setContent(rs.getString("content"));
