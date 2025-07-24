@@ -131,8 +131,9 @@ public class PostDao {
 				+ "     from     post"
 				+ "     order by pgood desc";
 		try {
-			Statement stmt = conn.createStatement();	// 쿼리를 생성하기 위한 객체를 stmt에 저장
-			ResultSet rs = stmt.executeQuery(query);	
+			PreparedStatement stmt = conn.prepareStatement(query);	// 쿼리를 생성하기 위한 객체를 stmt에 저장
+			ResultSet rs = stmt.executeQuery();	
+			
 			
 			while(rs.next()) {
 				Post post = new Post();

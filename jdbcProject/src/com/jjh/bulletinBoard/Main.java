@@ -349,7 +349,6 @@ public class Main {
 					System.out.println("현재 계정 정보 입니다.");
 					ArrayList<Usr> list = dao.infoUsr(id);
 					System.out.printf("아이디 : %s\n", list.get(0).getId());
-					System.out.printf("비밀번호 : %s\n", list.get(0).getPwd());
 					System.out.printf("이름 : %s\n", list.get(0).getName());
 				}				
 				break;

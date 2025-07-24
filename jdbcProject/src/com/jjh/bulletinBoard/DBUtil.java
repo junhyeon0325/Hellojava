@@ -9,7 +9,7 @@ public class DBUtil {
 		Connection conn = null;	
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");	// jdbc에서 driver클래스를 jvm에 로드하기위해 사용
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.51:1521:xe", "scott", "tiger");
 		} catch (Exception e) {	// ClassNotFoundException 원레는 이거였는데 drivermanger구문도 예외처리 할려고 exception으로 바꿈
 			e.printStackTrace();
 		}		
