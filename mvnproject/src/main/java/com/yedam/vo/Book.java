@@ -48,4 +48,17 @@ public class Book {
 	public String toStr() {
 		return "id: " + id + ", title: " + title + ", author: " + author + ", price: " + price;
 	}
+	
+	public String showBrief() {
+		return " " + id + " " + title + " " + price; 
+	}
+	
+	public String showDetail() {
+		// 도서ID: 2001 제목: 이천ㅇ리번
+		// 저자: 김이천 가격: 2000원
+		String formatStr = "도서ID: " + id + " 제목: " + title;
+		formatStr += "\n저자:    " + author + " 가격: " + price + "원";
+		
+		return formatStr;
+	}
 }
